@@ -1,8 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Avatar, Button } from 'antd';
 
 const UserProfile = ({ setIsLoggedIn }) => {
+  const style = useMemo(() => ({ marginTop: 10, marginLeft: 50 }), []);
   const onLogOut = useCallback(() => {
     setIsLoggedIn(false);
   }, []);
@@ -25,7 +26,9 @@ const UserProfile = ({ setIsLoggedIn }) => {
       ]}
     >
       <Card.Meta avatar={<Avatar>ZC</Avatar>} title="mspark" />
-      <Button onClick={onLogOut}>로그아웃</Button>
+      <Button onClick={onLogOut} style={style}>
+        로그아웃
+      </Button>
     </Card>
   );
 };
