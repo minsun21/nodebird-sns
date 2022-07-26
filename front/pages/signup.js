@@ -1,17 +1,9 @@
-import React, { useState, useCallback } from 'react';
-import { Form, Input, Checkbox, Button } from 'antd';
-import PropTypes from 'prop-types';
+import React, {useState, useCallback, useMemo} from 'react';
+import styled from 'styled-components';
+import {Form, Input, Checkbox, Button} from 'antd';
 
 import AppLayout from '../components/AppLayout';
 import useInput from '../hooks/useInput';
-
-const TextInput = ({ value }) => {
-  return <div>{value}</div>;
-};
-
-TextInput.propTypes = {
-  value: PropTypes.string,
-};
 
 const Signup = () => {
   const [passwordCheck, setPasswordCheck] = useState('');
@@ -33,21 +25,29 @@ const Signup = () => {
   }, [password, passwordCheck, term]);
 
   const onChangePasswordCheck = useCallback(
-    (e) => {
+    e => {
       setPasswordError(e.target.value !== password);
       setPasswordCheck(e.target.value);
     },
     [password],
   );
-
-  const onChangeTerm = useCallback((e) => {
+  const errorStyle = useMemo(() => ({color: 'red'}), []);
+  const onChangeTerm = useCallback(e => {
     setTermError(false);
     setTerm(e.target.checked);
   }, []);
 
+  const FormWrapper = styled(Form)`
+    padding: 10px;
+  `;
+
+  const ButtonDivWrapper = styled.div`
+    margintop: 10px;
+  `;
+
   return (
     <AppLayout>
-      <Form onFinish={onSubmit} style={{ padding: 10 }}>
+      <FormWrapper onFinish={onSubmit}>
         <div>
           <label htmlFor="user-id">아이디</label>
           <br />
@@ -85,23 +85,21 @@ const Signup = () => {
             onChange={onChangePasswordCheck}
           />
           {passwordError && (
-            <div style={{ color: 'red' }}>비밀번호가 일치하지 않습니다.</div>
+            <div style={errorStyle}>비밀번호가 일치하지 않습니다.</div>
           )}
         </div>
         <div>
           <Checkbox name="user-term" checked={term} onChange={onChangeTerm}>
-            제로초 말을 잘 들을 것을 동의합니다.
+            약관에 동의 합니다.
           </Checkbox>
-          {termError && (
-            <div style={{ color: 'red' }}>약관에 동의하셔야 합니다.</div>
-          )}
+          {termError && <div style={errorStyle}>약관에 동의하셔야 합니다.</div>}
         </div>
-        <div style={{ marginTop: 10 }}>
+        <ButtonDivWrapper>
           <Button type="primary" htmlType="submit">
             가입하기
           </Button>
-        </div>
-      </Form>
+        </ButtonDivWrapper>
+      </FormWrapper>
     </AppLayout>
   );
 };
