@@ -1,11 +1,15 @@
-import React, { useCallback, useMemo } from 'react';
+import React, {useCallback, useMemo} from 'react';
 import PropTypes from 'prop-types';
-import { Card, Avatar, Button } from 'antd';
+import {Card, Avatar, Button} from 'antd';
+import {useDispatch} from 'react-redux';
+import {logoutAction} from '../reducers/user';
 
-const UserProfile = ({ setIsLoggedIn }) => {
-  const style = useMemo(() => ({ marginTop: 10, marginLeft: 50 }), []);
+const UserProfile = () => {
+  const dispatch = useDispatch();
+
+  const style = useMemo(() => ({marginTop: 10, marginLeft: 50}), []);
   const onLogOut = useCallback(() => {
-    setIsLoggedIn(false);
+    dispatch(logoutAction());
   }, []);
 
   return (

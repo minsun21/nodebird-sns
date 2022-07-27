@@ -1,14 +1,16 @@
-import React, { useMemo, useState } from 'react';
+import React, {useMemo} from 'react';
 import PropTypes from 'prop-types';
 import Link from 'next/link';
-import { Menu, Input, Row, Col } from 'antd';
+import {Menu, Input, Row, Col} from 'antd';
 
 import UserProfile from '../components/UserProfile';
 import LoginForm from '../components/LoginForm';
+import {useSelector} from 'react-redux';
 
-const AppLayout = ({ children }) => {
-  const style = useMemo(() => ({ marginTop: 10 }), []);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+const AppLayout = ({children}) => {
+  const isLoggedIn = useSelector(state => state.user.isLoggedIn);
+
+  const style = useMemo(() => ({marginTop: 10}), []);
   return (
     <div>
       <Menu mode="horizontal">
@@ -33,11 +35,7 @@ const AppLayout = ({ children }) => {
       </Menu>
       <Row gutter={8}>
         <Col xs={24} md={6}>
-          {isLoggedIn ? (
-            <UserProfile setIsLoggedIn={setIsLoggedIn} />
-          ) : (
-            <LoginForm setIsLoggedIn={setIsLoggedIn} />
-          )}
+          {isLoggedIn ? <UserProfile /> : <LoginForm />}
         </Col>
         <Col xs={24} md={12}>
           {children}
